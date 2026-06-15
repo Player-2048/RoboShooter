@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /c/Users/Admin/Desktop/RoboShooter *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(rm /c/Users/Admin/Desktop/RoboShooter/_setup_scene.gd)",
+      "Bash(e:/SteamLibrary/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe *)",
+      "Read(/c/Users/Admin/Desktop/RoboShooter/**)",
+      "Write(/c/Users/Admin/Desktop/RoboShooter/**)",
+      "Edit(/c/Users/Admin/Desktop/RoboShooter/**)",
+      "Glob(/c/Users/Admin/Desktop/RoboShooter/**)",
+      "Grep(/c/Users/Admin/Desktop/RoboShooter/**)",
+      "WebSearch(*)"
+    ]
+  }
+}

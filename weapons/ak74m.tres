@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Weapon" load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://sprites/crosshair.png" id="1_labt1"]
+[ext_resource type="PackedScene" path="res://weapons/ak74m.tscn" id="2_mbuv0"]
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="3_g425x"]
+
+[resource]
+script = ExtResource("3_g425x")
+model = ExtResource("2_mbuv0")
+position = Vector3(0.2, -0.2, -0.7)
+muzzle_position = Vector3(0, -0.05, -0.9)
+cooldown = 0.12
+max_distance = 100
+spread = 0.6
+knockback = 15
+min_knockback = Vector2(0.01, 0.01)
+max_knockback = Vector2(0.035, 0.03)
+sound_shoot = "sounds/blaster.ogg"
+crosshair = ExtResource("1_labt1")

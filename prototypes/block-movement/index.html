@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>简易方块移动</title>
+    <style>
+      /* 创建游戏区域 */
+      #game-area {
+        width: 600px;
+        height: 400px;
+        background-color: #4caf50; /* 绿色空地 */
+        position: relative;
+        overflow: hidden; /* 防止方块移出边界 */
+        margin: 20px auto;
+        border: 3px solid #388e3c;
+      }
+
+      /* 玩家方块 */
+      #player {
+        width: 30px;
+        height: 30px;
+        background-color: #ffeb3b; /* 黄色方块 */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 居中初始位置 */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 游戏区域容器 -->
+    <div id="game-area">
+      <div id="player"></div>
+    </div>
+
+    <script>
+      // 获取元素
+      const player = document.getElementById("player");
+      const gameArea = document.getElementById("game-area");
+
+      // 初始位置
+      let posX = gameArea.offsetWidth / 2 - player.offsetWidth / 2;
+      let posY = gameArea.offsetHeight / 2 - player.offsetHeight / 2;
+
+      // 移动速度
+      const moveSpeed = 10;
+
+      // 键盘事件监听
+      document.addEventListener("keydown", (event) => {
+        // 获取边界限制
+        const maxX = gameArea.offsetWidth - player.offsetWidth;
+        const maxY = gameArea.offsetHeight - player.offsetHeight;
+
+        switch (event.key) {
+          case "ArrowLeft":
+            posX = Math.max(0, posX - moveSpeed);
+            break;
+          case "ArrowRight":
+            posX = Math.min(maxX, posX + moveSpeed);
+            break;
+          case "ArrowUp":
+            posY = Math.max(0, posY - moveSpeed);
+            break;
+          case "ArrowDown":
+            posY = Math.min(maxY, posY + moveSpeed);
+            break;
+        }
+
+        // 更新方块位置
+        player.style.left = posX + "px";
+        player.style.top = posY + "px";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>过道射击游戏</title>
+    <style>
+      canvas {
+        border: 2px solid black;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f0f0f0;
+      }
+      .info {
+        margin: 10px;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="info">
+      使用 ↑ ↓ 切换过道，空格射击 | 当前过道: <span id="currentLane">0</span>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+      // 获取canvas上下文
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // 设置画布尺寸
+      canvas.width = 800;
+      canvas.height = 600;
+
+      // 游戏参数（重要！调整这个参数即可改变过道数量）
+      let numLanes = 6; // 试试改成5或更多！
+      const laneHeight = canvas.height / numLanes;
+
+      // 玩家设置
+      const player = {
+        x: 50,
+        y: laneHeight * 0 + (laneHeight - 30) / 2, // 初始位置在第0号过道
+        width: 30,
+        height: 30,
+        color: "yellow",
+        currentLane: 0,
+      };
+
+      // 子弹设置
+      let bullets = [];
+      const bulletSpeed = 7;//弹速
+      let lastShot = 0;
+      const shootDelay = 200; // 射击间隔（毫秒）
+
+      // 按键状态跟踪
+      const keys = {};
+
+      // 事件监听
+      window.addEventListener("keydown", (e) => {
+        keys[e.key] = true;
+      });
+
+      window.addEventListener("keyup", (e) => {
+        keys[e.key] = false;
+      });
+
+      // 游戏循环
+      function gameLoop() {
+        // 清除画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 处理输入
+        handleInput();
+
+        // 更新游戏状态
+        updateBullets();
+
+        // 渲染画面
+        drawLanes();
+        drawPlayer();
+        drawBullets();
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      // 处理用户输入
+      function handleInput() {
+        // 切换过道
+        if (keys["ArrowUp"]) {
+          player.currentLane = Math.max(0, player.currentLane - 1);
+          keys["ArrowUp"] = false; // 单次触发
+        }
+        if (keys["ArrowDown"]) {
+          player.currentLane = Math.min(numLanes - 1, player.currentLane + 1);
+          keys["ArrowDown"] = false; // 单次触发
+        }
+
+        // 更新玩家Y坐标
+        player.y =
+          player.currentLane * laneHeight + (laneHeight - player.height) / 2;
+
+        // 更新显示当前过道
+        document.getElementById("currentLane").textContent = player.currentLane;
+
+        // 射击（空格键）
+        if (keys[" "] && Date.now() - lastShot > shootDelay) {
+          bullets.push({
+            x: player.x + player.width,
+            y: player.y + player.height / 2 - 2.5,
+            width: 10,
+            height: 5,
+            color: "red",
+          });
+          lastShot = Date.now();
+        }
+      }
+
+      // 更新子弹位置
+      function updateBullets() {
+        bullets = bullets.filter((bullet) => {
+          bullet.x += bulletSpeed;
+          return bullet.x < canvas.width; // 移除屏幕外的子弹
+        });
+      }
+
+      // 绘制过道
+      function drawLanes() {
+        // 交替颜色增强可视性
+        for (let i = 0; i < numLanes; i++) {
+          ctx.fillStyle = i % 2 === 0 ? "#e8e8e8" : "#f8f8f8";
+          ctx.fillRect(0, i * laneHeight, canvas.width, laneHeight);
+        }
+
+        // 绘制过道分界线
+        ctx.strokeStyle = "#ccc";
+        for (let i = 1; i < numLanes; i++) {
+          ctx.beginPath();
+          ctx.moveTo(0, i * laneHeight);
+          ctx.lineTo(canvas.width, i * laneHeight);
+          ctx.stroke();
+        }
+      }
+
+      // 绘制玩家
+      function drawPlayer() {
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+      }
+
+      // 绘制子弹
+      function drawBullets() {
+        bullets.forEach((bullet) => {
+          ctx.fillStyle = bullet.color;
+          ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        });
+      }
+
+      // 启动游戏
+      gameLoop();
+    </script>
+  </body>
+</html>

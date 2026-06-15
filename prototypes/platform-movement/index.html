@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>简易平台移动示例</title>
+    <style>
+      #gameCanvas {
+        border: 2px solid black;
+        /* 可以通过修改这个边距来调整画布位置 */
+        margin: 50px auto;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 隐藏的图片元素用于预加载 -->
+    <img
+      id="playerImage"
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADSSURBVFhH7ZaxDcIwDEVzEyuQWGAGdmAFVmAFVmAFVmAFRmACVmAFJvDZkZQ0Vqo0n4KkHlL0EsmO7X+eHqWUz1vX9Q6aPwUj6gA7nwD1vq6rD3Dbtv0+8t5zR4C+72/0zrmF3hiz0sdx7JRS8zRNJ8D7vp/5+QaYpmmht9aunPNCj+O40HPOJ4D3/szPN8A4Dgu9c26lL8uy0Od5PgG892d+vgFijAt9GIaVvm3bQl/X9QTw3p/5+QZABYgxLvR5nlf6vu8LfV3XE8B7f+bnG+B5/gA5cHc6gX6cTgAAAABJRU5ErkJggg=="
+      style="display: none"
+    />
+    <img
+      id="bgImage"
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAQSURBVBhXY2RgYPhPw/AfygABAHyIAHDqE6S6AAAAAElFTkSuQmCC"
+      style="display: none"
+    />
+
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <script>
+      // 获取画布元素
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // 游戏对象
+      const player = {
+        x: 100, // 初始X坐标
+        y: 300, // 初始Y坐标（地面位置）
+        width: 40, // 角色宽度
+        height: 40, // 角色高度
+        speedX: 0, // 水平移动速度
+        speedY: 0, // 垂直移动速度
+        isJumping: false, // 跳跃状态
+        // 物理参数（可以修改这些值调整手感）
+        moveSpeed: 5, // 移动速度
+        jumpForce: -12, // 跳跃力度（负数因为Y轴向下）
+        gravity: 0.5, // 重力
+      };
+
+      // 游戏状态
+      const game = {
+        ground: 300, // 地面高度
+        background: document.getElementById("bgImage"),
+        playerImage: document.getElementById("playerImage"),
+      };
+
+      // 键盘状态跟踪
+      const keys = {
+        ArrowLeft: false,
+        ArrowRight: false,
+        Space: false,
+      };
+
+      // 事件监听器
+      window.addEventListener("keydown", (e) => {
+        if (e.key in keys) keys[e.key] = true;
+      });
+
+      window.addEventListener("keyup", (e) => {
+        if (e.key in keys) keys[e.key] = false;
+      });
+
+      // 游戏循环
+      function update() {
+        // 处理水平移动
+        if (keys.ArrowLeft) player.speedX = -player.moveSpeed;
+        else if (keys.ArrowRight) player.speedX = player.moveSpeed;
+        else player.speedX = 0;
+
+        // 处理跳跃
+        if (keys.Space && !player.isJumping) {
+          player.speedY = player.jumpForce;
+          player.isJumping = true;
+        }
+
+        // 应用物理
+        player.x += player.speedX;
+        player.y += player.speedY;
+        player.speedY += player.gravity;
+
+        // 地面碰撞检测
+        if (player.y > game.ground) {
+          player.y = game.ground;
+          player.speedY = 0;
+          player.isJumping = false;
+        }
+
+        // 保持角色在屏幕范围内
+        player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+
+        draw();
+        requestAnimationFrame(update);
+      }
+
+      // 绘制函数
+      function draw() {
+        // 绘制背景
+        ctx.drawImage(game.background, 0, 0, canvas.width, canvas.height);
+
+        // 绘制玩家角色
+        ctx.drawImage(
+          game.playerImage,
+          player.x,
+          player.y,
+          player.width,
+          player.height
+        );
+      }
+
+      // 启动游戏
+      update();
+    </script>
+  </body>
+</html>

@@ -1,64 +1,101 @@
 # RoboShooter
 
-一款远程操控机器人对战的第一人称射击游戏。
+> A remote-controlled robot extraction shooter. Built with Godot 4.6 + GDScript. MIT licensed.
+>
+> [中文说明](README-zh.md) | [设计文档](docs/game-design-doc.md) ([English](docs/game-design-doc-en.md)) | [Dev Log](devlog.md)
 
-## 当前状态
+---
 
-**极早期开发阶段** — 正在搭建测试场地原型，实现基础移动、射击等核心交互。
+## What Is This?
 
-## 核心玩法设想
+**You are a remote operator in a safe room. You control robot carriers sent into a fully-automated mining field.** When your robot is destroyed, your body is safe — but your gear is gone forever.
 
-- 玩家远程操控各类**机器人**进行战斗，而非人类角色
-- **未来科幻风格**的电磁武器、火药武器系统
-- 独特的**机器人血量/能源/算力**三维生存机制
-- 矿场主题地图，含黑客网络、仓库加工、物资搬运等深度玩法
+This isn't another human-soldier shooter. It's a game about **machines fighting machines**, where:
 
-> 详细设计文档见 [docs/design.md](docs/design.md)
+- **Two health systems**: mechanical durability + signal strength (remote control link). Either hitting zero = death.
+- **Computing power** is a shared team resource — hack, jam, counter-hack. Teammates share a computing pool.
+- **Dynamic map modeling** — scan the environment to permanently unlock wireframe 3D maps. Mark locations. State changes reveal enemy presence.
+- **A living factory ecosystem** — the map itself is an automated production line: mines → smelters → factories → shipping depots. Interact with every link in the chain.
 
-## 技术栈
+## Current Status
 
-| 类别 | 选用 |
-|------|------|
-| 游戏引擎 | [Godot 4.x](https://godotengine.org/) |
-| 脚本语言 | GDScript |
-| 版本控制 | Git & GitHub |
-| 许可证 | MIT |
+**Early prototype.** Playable test arena with FPS movement, shooting, enemies. Actively seeking contributors.
 
-## 项目结构
+Built on [Kenney's Starter Kit FPS](https://github.com/KenneyNL/Starter-Kit-FPS) (CC0 assets) with:
+- Animated AK-74M weapon model (PBR, 8 keyframe animations)
+- Dual health-bar HUD (mechanical durability + signal strength)
+- Energy bar system with signal decay over time
+- Minimap system (follow/lock modes)
+
+## Quick Start
+
+```bash
+# Clone the project
+git clone https://github.com/Player-2048/RoboShooter.git
+cd RoboShooter
+
+# Open in Godot 4.6+
+# Run scenes/main.tscn
+```
+
+**Requirements:** [Godot 4.6](https://godotengine.org/) or later.
+
+## Tech Stack
+
+| Category | Choice |
+|----------|--------|
+| Engine | Godot 4.6 |
+| Language | GDScript |
+| VCS | Git & GitHub |
+| License | MIT |
+| Assets | CC0 (Kenney) + CC-BY-4.0 (models) |
+
+## Project Structure
 
 ```
 RoboShooter/
-├── README.md           # 项目说明（你在这）
-├── LICENSE             # MIT 许可证
-├── devlog.md           # 开发日志（AI 上下文）
-├── docs/               # 设计文档
-│   └── design.md       # 游戏系统设计
-├── prototypes/         # 早期网页原型
-│   ├── coin-collector/
-│   ├── corridor-shooter/
-│   ├── platform-movement/
-│   └── block-movement/
-├── project.godot       # Godot 项目文件（待创建）
-├── scenes/             # 游戏场景（待创建）
-├── scripts/            # GDScript 脚本（待创建）
-└── assets/             # 游戏资源（待创建）
+├── README.md / README-zh.md    # Bilingual readme
+├── LICENSE                     # MIT
+├── devlog.md / devlog-en.md    # Development log
+├── docs/
+│   ├── game-design-doc.md      # Full Chinese design doc
+│   ├── game-design-doc-en.md   # English condensed version
+│   └── design.md               # Original outline
+├── scenes/     scripts/        # Godot scene & script files
+├── assets/     prototypes/     # Art assets & web prototypes
+└── weapons/    objects/        # Weapon resources & game objects
 ```
 
-## 开发路线
+## Roadmap
 
-- [x] 项目初始化、许可证、README
-- [x] 游戏设计文档整理
-- [x] 网页原型整合
-- [ ] 搭建 Godot 项目框架
-- [ ] 测试场地：平面空间 + 第一人称移动
-- [ ] 射击系统：武器生成与弹道
-- [ ] 交互道具系统
-- [ ] 机器人技能系统
-- [ ] 地图设计与场景搭建
+- [x] Project init, MIT license
+- [x] Game design document (14 systems, 10+ facilities)
+- [x] Working prototype (FPS movement, shooting, enemies, HUD)
+- [ ] Weapon system: reload, ammo, multiple weapon types
+- [ ] Robot selection & skill system
+- [ ] Map modeling system (wireframe god-view)
+- [ ] Hacking & computing power mechanics
+- [ ] Multiplayer networking
+- [ ] Full mine map with all 10 facilities
 
-## 如何参与
+## Why Contribute?
 
-本项目由个人学习开发，采用 MIT 协议开源，欢迎任何形式的交流与建议。
+- **Novel game design** — robot extraction shooter is an untapped genre space
+- **100% GDScript** — easy to read, modify, and extend
+- **CC0 assets included** — you can build and test immediately
+- **Detailed design docs** — 14-system specification with mechanics explained
+- **Beginner-friendly codebase** — small, well-structured, actively documented
 
-- 提 **Issue** 反馈问题或建议
-- 提 **Pull Request** 贡献代码
+## How to Contribute
+
+1. Check [Issues](https://github.com/Player-2048/RoboShooter/issues) for tasks
+2. Read `docs/game-design-doc-en.md` for the full vision
+3. Fork → branch → PR
+4. Join the discussion
+
+**All contributions welcome** — code, art, sound, design feedback, documentation.
+
+---
+
+> "I'm a programming beginner. I handle the ideas and testing. AI writes the code. GitHub brings the collaborators."
+> — Player-2048, project creator
